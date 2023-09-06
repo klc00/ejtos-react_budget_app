@@ -4,6 +4,27 @@ import React, { createContext, useReducer } from "react";
 export const AppReducer = (state, action) => {
   let budget = 0;
   switch (action.type) {
+    case "CHANGE_CURRENCY":
+      return {
+        ...state,
+        currency: action.payload,
+      };
+    case "NEW_BUDGET":
+      if (action.payload > 20000) {
+        alert("Budget 20000 cannot be greater");
+        return { ...state };
+      }
+      const totalExpenses = state.expenses.reduce((total, item) => {
+        return (total += item.cost);
+      }, 0);
+      if (action.payload < totalExpenses) {
+        alert("The budget spent so far cannot be small");
+        return { ...state };
+      }
+      return {
+        ...state,
+        budget: action.payload,
+      };
     case "ADD_EXPENSE":
       let total_budget = 0;
       total_budget = state.expenses.reduce((previousExp, currentExp) => {
